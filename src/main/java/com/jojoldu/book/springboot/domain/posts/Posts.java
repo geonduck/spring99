@@ -26,6 +26,8 @@ public class Posts extends BaseTimeEntity {
 
     private String author;
 
+    private String pw;
+
     public void update(String title, String content) {
         this.title = title;
         this.content = content;

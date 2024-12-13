@@ -2,10 +2,7 @@ package com.jojoldu.book.springboot.service.posts;
 
 import com.jojoldu.book.springboot.domain.posts.Posts;
 import com.jojoldu.book.springboot.domain.posts.PostsRepository;
-import com.jojoldu.book.springboot.dto.PostsListResponseDto;
-import com.jojoldu.book.springboot.dto.PostsResponseDto;
-import com.jojoldu.book.springboot.dto.PostsSaveRequestDto;
-import com.jojoldu.book.springboot.dto.PostsUpdateRequestDto;
+import com.jojoldu.book.springboot.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +27,10 @@ public class PostsService {
         Posts posts = postsRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id = " + id));
 
+        if (!posts.getPw().equals(requestDto.getPw())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
         posts.update(requestDto.getTitle(), requestDto.getContent());
 
         return id;
@@ -52,9 +53,13 @@ public class PostsService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public void delete(Long id, PostsDeleteRequestDto requestDto) {
         Posts posts = postsRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id = " + id));
+
+        if (!posts.getPw().equals(requestDto.getPw())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
 
         postsRepository.delete(posts);
     }

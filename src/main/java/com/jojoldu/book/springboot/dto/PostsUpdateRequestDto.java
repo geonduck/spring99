@@ -14,11 +14,13 @@ public class PostsUpdateRequestDto {
 
     private String title;
     private String content;
+    private String pw;
 
     public Posts toEntity() {
         return Posts.builder()
                 .title(title)
                 .content(content)
+                .pw(pw)
                 .build();
     }
 }

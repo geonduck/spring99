@@ -1,5 +1,6 @@
 package com.jojoldu.book.springboot.web;
 
+import com.jojoldu.book.springboot.dto.PostsDeleteRequestDto;
 import com.jojoldu.book.springboot.dto.PostsResponseDto;
 import com.jojoldu.book.springboot.dto.PostsSaveRequestDto;
 import com.jojoldu.book.springboot.dto.PostsUpdateRequestDto;
@@ -29,8 +30,8 @@ public class PostsApiController {
     }
 
     @DeleteMapping("/api/v1/posts/{id}")
-    public Long delete(@PathVariable Long id) {
-        postsService.delete(id);
+    public Long delete(@PathVariable Long id, @RequestBody PostsDeleteRequestDto requestDto) {
+        postsService.delete(id, requestDto);
         return id;
     }
 

@@ -2,20 +2,27 @@ const main = {
     init : function () {
         let _this = this;
         $('#btn-save').on('click', function () {
-            _this.save();
+            _this.pwPrompt(_this.save);
         });
         $('#btn-update').on('click', function () {
-            _this.update();
+            _this.pwPrompt(_this.update);
         });
         $('#btn-delete').on('click', function () {
-            _this.delete();
+            _this.pwPrompt(_this.delete);
         });
     },
-    save : function () {
+    pwPrompt : function(e) {
+        let pw = prompt('비밀번호를 입력하세요.');
+        if(pw != null && pw !== '') e(pw);
+        else alert('비밀번호를 확인하세요.');
+    },
+
+    save : function (pw) {
         let data = {
             title : $('#title').val()
             , content : $('#content').val()
             , author : $('#author').val()
+            , pw : pw
         };
 
         $.ajax({
@@ -31,10 +38,11 @@ const main = {
             alert(JSON.stringify(error));
         })
     },
-    update : function () {
+    update : function (pw) {
         let data = {
               title : $('#title').val()
             , content: $('#content').val()
+            , pw : pw
         }
 
         let id =  $('#id').val();
@@ -52,7 +60,7 @@ const main = {
             alert(JSON.stringify(error))
         })
     },
-    delete : function () {
+    delete : function (pw) {
 
         let id =  $('#id').val();
 
@@ -61,6 +69,7 @@ const main = {
             , url: '/api/v1/posts/'+ id
             , dataType: 'json'
             , contentType: 'application/json; charset=UTF-8'
+            , data: JSON.stringify({pw : pw})
         }).done(function () {
             alert('글이 삭제되었습니다.')
             window.location.href = "/";
